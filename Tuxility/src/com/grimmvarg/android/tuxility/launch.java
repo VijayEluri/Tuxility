@@ -1,5 +1,7 @@
 package com.grimmvarg.android.tuxility;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +11,7 @@ public class launch extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	Log.v("TEEEEEEEST", "" + cliHandler.runCommand("ls", false));
+    	cliHandler.runCommand("ls");
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     }
