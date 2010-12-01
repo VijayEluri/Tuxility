@@ -1,4 +1,6 @@
 	
+	Hi!
+
     I create this software for my own personal intereset and simply share it because
     others might find it usefull. I take no responsibility what so ever for any
     damage that might occur from using my software. I will however try to help 
@@ -17,3 +19,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+TODO:
+	- Backup and restore /efs - Curio
+	- Change wifi sleep policy - RyanZa
+	- Delete batterystats - Curio
+	- Infosection - xda
+	- CheatCodes :D
+	- System information
+	- Change system Font - Socket84
