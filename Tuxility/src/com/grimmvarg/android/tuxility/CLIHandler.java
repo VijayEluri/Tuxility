@@ -1,6 +1,7 @@
 package com.grimmvarg.android.tuxility;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,23 +12,23 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import android.content.Context;
+import android.os.Message;
 import android.util.Log;
 
 public class CLIHandler {
 	private static String settingsDB = "/dbdata/databases/com.android.providers.settings/settings.db";
 	private static String tuxility = "/sdcard/.tuxility";
-	private final Runtime RUNTIME = Runtime.getRuntime();
-	private Process process;
+	private Process suShell = null;
+	private Process userShell = null;
 
 	public void setup() {
 		File tuxilityDir = new File("/mnt/sdcard/.tuxility");
-		Log.v("<--- CLIHandler - Setup() --->", "Getting root");
 		if (!tuxilityDir.exists()) {
-			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders: "+ tuxilityDir.toString());
+			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders: " + tuxilityDir.toString());
 			execute("mkdir " + tuxility, false);
 			execute("mkdir " + tuxility + "/backup", false);
 		} else {
-			Log.v("<--- CLIHandler - Setup() --->", "Found file: "+ tuxilityDir.toString());
+			Log.v("<--- CLIHandler - Setup() --->", "Found file: " + tuxilityDir.toString());
 		}
 
 	}
@@ -38,18 +39,31 @@ public class CLIHandler {
 
 		return true;
 	}
-	
+
 	private void execute(String command, Boolean su){
-		if(su) command = "su -c \"" + command  + "\"";
+		Process shell;
+		DataOutputStream toProcess = null;
+		
 		try {
+			if(su){
+				if(suShell == null) suShell = Runtime.getRuntime().exec("su");
+				shell = suShell;
+			}else {
+				if(userShell == null) userShell = Runtime.getRuntime().exec("sh");
+				shell = userShell;
+			}
+
+			toProcess = new DataOutputStream(shell.getOutputStream());
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
-			process = RUNTIME.exec(command);
-			int result = process.waitFor();
+			toProcess.writeBytes(command + "\n");
+			toProcess.flush();
+			int result = 1; //shell.waitFor();
 			Log.v("<--- CLIHandler - Execute() --->", "Result: " + result + "from: " + command);
 		} catch (IOException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString());
-		} catch (InterruptedException e) {
-			Log.v("<--- CLIHandler - Execute() --->", e.toString());
-		}
+		} //catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }
