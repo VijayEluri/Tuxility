@@ -66,6 +66,10 @@ public class CLIHandler {
 	public void backupKernel(){
 		execute("cat /dev/block/bml7 > " + backupDir + "kernel-backup", true);
 	}
+	
+	public void getLatestVoodoo(){
+		execute("wget -P " + tuxilityDir + " http://project-voodoo.org/downloads/voodoo-snapshot.tar", false);
+	}
 
 	private void execute(String command, Boolean su){
 		Process shell;
@@ -90,7 +94,7 @@ public class CLIHandler {
 	}
 	
 	public void reboot(String type){
-		execute("reboot" + type , true);
+		execute("reboot " + type , true);
 	}
 
 }
