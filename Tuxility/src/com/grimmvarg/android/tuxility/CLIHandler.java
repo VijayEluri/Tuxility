@@ -62,6 +62,10 @@ public class CLIHandler {
 		execute("chmod 755 /data/redbend_ua", true);
 		execute("/data/redbend_ua restore " + tuxilityDir + "zImage /dev/block/bml7", true);
 	}
+	
+	public void backupKernel(){
+		execute("cat /dev/block/bml7 > " + backupDir + "kernel-backup", true);
+	}
 
 	private void execute(String command, Boolean su){
 		Process shell;
