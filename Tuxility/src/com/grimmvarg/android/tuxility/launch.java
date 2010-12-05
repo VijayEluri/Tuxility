@@ -11,9 +11,10 @@ public class launch extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	cliHandler.setup();
+    	//cliHandler.setup();
     	//cliHandler.backupSettingsDB();
-    	cliHandler.backupEFS();
+    	//cliHandler.backupEFS();
+    	cliHandler.installKernel("");
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     }

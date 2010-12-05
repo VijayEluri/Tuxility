@@ -18,14 +18,15 @@ import android.util.Log;
 public class CLIHandler {
 	private static String settingsDB = "/dbdata/databases/com.android.providers.settings/settings.db";
 	private static String backupDir = "/sdcard/.tuxility/backup/";
+	private static String tuxilityDir = "/sdcard/.tuxility/";
 	private Process suShell = null;
 	private Process userShell = null;
 
 	public void setup() {
 		File tuxilityDir = new File("/mnt/sdcard/.tuxility");
 		if (!tuxilityDir.exists()) {
-			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders: " + tuxilityDir.toString());
-			execute("mkdir " + "/sdcard/.tuxility", false);
+			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in " + tuxilityDir.toString());
+			execute("mkdir " + tuxilityDir, false);
 			execute("mkdir " + backupDir, false);
 		} else {
 			Log.v("<--- CLIHandler - Setup() --->", "Found file: " + tuxilityDir.toString());
@@ -55,6 +56,12 @@ public class CLIHandler {
 		execute("tar xvvf " + backupDir + "efs-backup.tar.gz /efs", true);
 
 	}
+	
+	public void installKernel(String path){
+		execute("cat " + tuxilityDir + "redbend_ua > /data/redbend_ua", true);
+		execute("chmod 755 /data/redbend_ua", true);
+		execute("/data/redbend_ua restore " + tuxilityDir + "zImage /dev/block/bml7", true);
+	}
 
 	private void execute(String command, Boolean su){
 		Process shell;
@@ -73,10 +80,12 @@ public class CLIHandler {
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
 			toProcess.writeBytes(command + "\n");
 			toProcess.flush();
-			int result = 1; //shell.waitFor();
-			Log.v("<--- CLIHandler - Execute() --->", "Result: " + result + "from: " + command);
 		} catch (IOException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString());
 		} 
+	}
+	
+	public void reboot(String type){
+		execute("reboot" + type , true);
 	}
 }
