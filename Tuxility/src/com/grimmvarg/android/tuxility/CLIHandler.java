@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class CLIHandler {
 	private static String settingsDB = "/dbdata/databases/com.android.providers.settings/settings.db";
-	private static String tuxility = "/sdcard/.tuxility";
+	private static String backupDir = "/sdcard/.tuxility/backup/";
 	private Process suShell = null;
 	private Process userShell = null;
 
@@ -25,19 +25,35 @@ public class CLIHandler {
 		File tuxilityDir = new File("/mnt/sdcard/.tuxility");
 		if (!tuxilityDir.exists()) {
 			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders: " + tuxilityDir.toString());
-			execute("mkdir " + tuxility, false);
-			execute("mkdir " + tuxility + "/backup", false);
+			execute("mkdir " + "/sdcard/.tuxility", false);
+			execute("mkdir " + backupDir, false);
 		} else {
 			Log.v("<--- CLIHandler - Setup() --->", "Found file: " + tuxilityDir.toString());
 		}
 
 	}
 
-	public boolean backupSettingsDB() {
+	public void backupSettingsDB() {
 		Log.v("<--- CLIHandler - BackupSettings() --->", "creating settings.db backup");
-		execute("cp " + settingsDB + " " + tuxility + "/backup/settings.db", true);
+		execute("cp " + settingsDB + " " + backupDir + "settings.db", true);
 
-		return true;
+	}
+	
+	public void restoreSettingsDB() {
+		Log.v("<--- CLIHandler - RestoreSettings() --->", "restoring settings.db");
+		execute("cp " + settingsDB + " " + backupDir + "settings.db", true);
+
+	}
+	
+	public void backupEFS(){
+		Log.v("<--- CLIHandler - BackupEFS() --->", "creating EFS backup");
+		execute("tar zcvf " + backupDir + "efs-backup.tar.gz /efs", true);
+	}
+	
+	public void restoreEFS(){
+		Log.v("<--- CLIHandler - RestoreEFS() --->", "restoring EFS");
+		execute("tar xvvf " + backupDir + "efs-backup.tar.gz /efs", true);
+
 	}
 
 	private void execute(String command, Boolean su){
@@ -61,9 +77,6 @@ public class CLIHandler {
 			Log.v("<--- CLIHandler - Execute() --->", "Result: " + result + "from: " + command);
 		} catch (IOException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString());
-		} //catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		} 
 	}
 }
