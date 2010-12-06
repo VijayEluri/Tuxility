@@ -28,19 +28,6 @@ public class FileChooser extends ListActivity {
 		setContentView(R.layout.filechooser);
 		refresh(root);
 	}
-
-    
-//    private void getFiles(File path) {
-//        if (path.isDirectory()) {
-//            File[] directory = path.listFiles();
-//            for (File file : directory) {
-//                getFiles(file);
-//            }
-//            return;
-//        }
-//        String filename = path.getName();
-//        fileList.add(filename);
-//    }
 	
 	private void refresh(File file){
 		workingDir = file;
@@ -55,7 +42,7 @@ public class FileChooser extends ListActivity {
         if (path.isDirectory()) {
             File[] directory = path.listFiles();
             for (File file : directory) {
-                fileList.add(file.getName());
+            	fileList.add(file.getName());
             }
         }
     }
@@ -73,6 +60,7 @@ public class FileChooser extends ListActivity {
         File pickedFile = new File(workingDir + "/" + fileList.get(position));
         if(!pickedFile.isDirectory()){
         	tuxHelper.setChoosenFile(pickedFile.getAbsolutePath());
+        	setResult(RESULT_OK);
             finish();
         }else{
         	refresh(pickedFile);

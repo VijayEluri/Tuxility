@@ -12,9 +12,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.ChoiceFormat;
 
+import android.R.bool;
+import android.R.string;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
@@ -92,8 +97,7 @@ public class TuxHelper {
 	public void installKernel(String kernelPath){
 		execute("cat " + tuxilityPath + "redbend_ua > /data/redbend_ua", true);
 		execute("chmod 755 /data/redbend_ua", true);
-		showMessage(kernelPath);
-		//execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7", true);
+		execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7", true);
 	}
 	
 	public void backupKernel(String name){
@@ -157,6 +161,5 @@ public class TuxHelper {
 	public void setChoosenFile(String choosenFile) {
 		this.choosenFile = choosenFile;
 	}
-	
 
 }

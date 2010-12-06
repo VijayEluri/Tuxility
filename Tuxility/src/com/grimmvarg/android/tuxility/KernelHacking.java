@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager.OnActivityResultListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,10 +36,17 @@ public class KernelHacking extends Activity implements OnClickListener{
 		else if (findViewById(view.getId()).equals(findViewById(R.id.installKernel))) {
 			Intent nextIntent = new Intent(Intent.ACTION_VIEW);
 			nextIntent.setClassName(this, FileChooser.class.getName());
-			startActivity(nextIntent);
-			tuxHelper.installKernel(tuxHelper.getChoosenFile());
+			nextIntent.putExtra("kernelPath", "");
+			startActivityForResult(nextIntent, 1);
 		}
 		
 	}
-
+	
+	@Override
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  super.onActivityResult(requestCode, resultCode, data);
+	  if(resultCode==RESULT_OK && requestCode==1){
+	   tuxHelper.installKernel(tuxHelper.getChoosenFile());
+	  }
+	}
 }
