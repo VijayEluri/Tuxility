@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class BackupManagement extends Activity implements OnClickListener {
-	private CLIHandler cliHandler = CLIHandler.getInstance();
+	private TuxHelper tuxHelper = TuxHelper.getInstance();
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,20 +27,20 @@ public class BackupManagement extends Activity implements OnClickListener {
 
 	public void onClick(View view) {
 		if(findViewById(view.getId()).equals(findViewById(R.id.backupSettingsDB))){
-			cliHandler.showMessage("Backing up settings.db");
-			cliHandler.backupSettingsDB();
+			tuxHelper.showMessage("Backing up settings.db");
+			tuxHelper.backupSettingsDB();
 		}
 		else if (findViewById(view.getId()).equals(findViewById(R.id.restoreSettingsDB))) {
-			cliHandler.showMessage("Restoring settings.db");
-			cliHandler.restoreSettingsDB();
+			tuxHelper.showMessage("Restoring settings.db");
+			tuxHelper.restoreSettingsDB();
 		}
 		else if (findViewById(view.getId()).equals(findViewById(R.id.backupEFS))) {
-			cliHandler.showMessage("Backing up /efs");
-			cliHandler.backupEFS();
+			tuxHelper.showMessage("Backing up /efs");
+			tuxHelper.backupEFS();
 		}
 		else if (findViewById(view.getId()).equals(findViewById(R.id.restoreEFS))) {
-			cliHandler.showMessage("Restoring /efs");
-			cliHandler.restoreEFS();
+			tuxHelper.showMessage("Restoring /efs");
+			tuxHelper.restoreEFS();
 		}
 		
 	}

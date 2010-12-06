@@ -16,19 +16,19 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-public class CLIHandler {
+public class TuxHelper {
 	private static String settingsDB = "/dbdata/databases/com.android.providers.settings/settings.db";
 	private static String backupDir = "/sdcard/.tuxility/backup/";
 	private static String tuxilityDir = "/sdcard/.tuxility/";
 	private Process suShell = null;
 	private Process userShell = null;
 	private Context tuxilityContext;
-	private static CLIHandler instance;
+	private static TuxHelper instance;
 
-	private CLIHandler(){
+	private TuxHelper(){
 		
 	}
-	private CLIHandler(Context context){
+	private TuxHelper(Context context){
 		tuxilityContext = context;
 		File tuxilityDir = new File("/mnt/sdcard/.tuxility");
 		if (!tuxilityDir.exists()) {
@@ -104,18 +104,18 @@ public class CLIHandler {
 		execute("reboot " + type , true);
 	}
 	
-	public static CLIHandler getInstance() {
+	public static TuxHelper getInstance() {
 		if(instance == null){
-			instance = new CLIHandler();
+			instance = new TuxHelper();
 		}
 		
 		return instance;
 
 	}
 
-	public static CLIHandler getInstance(Context applicationContext) {
+	public static TuxHelper getInstance(Context applicationContext) {
 		if(instance == null){
-			instance = new CLIHandler(applicationContext);
+			instance = new TuxHelper(applicationContext);
 		}
 		
 		return instance;

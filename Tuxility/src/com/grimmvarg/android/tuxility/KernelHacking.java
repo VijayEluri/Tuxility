@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class KernelHacking extends Activity implements OnClickListener{
-	private CLIHandler cliHandler = CLIHandler.getInstance();
+	private TuxHelper tuxHelper = TuxHelper.getInstance();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,12 +23,12 @@ public class KernelHacking extends Activity implements OnClickListener{
 	
 	public void onClick(View view) {
 		if (findViewById(view.getId()).equals(findViewById(R.id.backupKernel))) {
-			cliHandler.showMessage("Backing up kernel");
-			cliHandler.backupKernel("backup");
+			tuxHelper.showMessage("Backing up kernel");
+			tuxHelper.backupKernel("backup");
 		}
 		else if (findViewById(view.getId()).equals(findViewById(R.id.installKernel))) {
-			cliHandler.showMessage("Installing kernel");
-			cliHandler.installKernel("");
+			tuxHelper.showMessage("Installing kernel");
+			tuxHelper.installKernel("");
 		}
 		
 	}

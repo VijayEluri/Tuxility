@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class RebootManager extends Activity implements OnClickListener {
-	private CLIHandler cliHandler = CLIHandler.getInstance();
+	private TuxHelper tuxHelper = TuxHelper.getInstance();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,14 +25,14 @@ public class RebootManager extends Activity implements OnClickListener {
 
 	public void onClick(View view) {
 		if (findViewById(view.getId()).equals(findViewById(R.id.normalReboot))) {
-			cliHandler.showMessage("Normal Reboot");
-			cliHandler.reboot("");
+			tuxHelper.showMessage("Normal Reboot");
+			tuxHelper.reboot("");
 		} else if (findViewById(view.getId()).equals(findViewById(R.id.recoveryMode))) {
-			cliHandler.showMessage("Recovery Mode");
-			cliHandler.reboot("recovery");
+			tuxHelper.showMessage("Recovery Mode");
+			tuxHelper.reboot("recovery");
 		} else if (findViewById(view.getId()).equals(findViewById(R.id.downloadMode))) {
-			cliHandler.showMessage("Download Mode");
-			cliHandler.reboot("download");
+			tuxHelper.showMessage("Download Mode");
+			tuxHelper.reboot("download");
 		}
 
 	}

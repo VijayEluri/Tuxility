@@ -14,15 +14,15 @@ import android.widget.Toast;
 import android.widget.RemoteViews.ActionException;
 
 public class Launch extends Activity implements OnClickListener {
-    CLIHandler cliHandler;
+    TuxHelper tuxHelper;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-    	if(cliHandler == null){
-    		CLIHandler.getInstance(getApplicationContext());
+    	if(tuxHelper == null){
+    		TuxHelper.getInstance(getApplicationContext());
     	}
         
     	Button backupManagement = (Button)findViewById(R.id.backupManagement);

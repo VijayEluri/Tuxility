@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="wrap_content">
 
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Backup and Restore" android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/backupManagement"/>
-	
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Kernel hacking" android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/kernelHacking" />
+	<Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Backup and Restore"
+		android:layout_gravity="right" android:layout_weight="0.2"
+		android:id="@+id/backupManagement" />
 
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Do other stuff" android:layout_gravity="right"
-		android:layout_weight="0.2" android:onClick="" />
+	<Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Kernel hacking"
+		android:layout_gravity="right" android:layout_weight="0.2"
+		android:id="@+id/kernelHacking" />
 
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Reboot to .." android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/rebootManager" />
+	<Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Cheat codes"
+		android:layout_gravity="right" android:layout_weight="0.2" android:id="@+id/cheatCodes" />
+
+	<Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Edit settings.db"
+		android:layout_gravity="right" android:layout_weight="0.2"
+		android:id="@+id/editSettings" />
+
+	<Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Reboot to .."
+		android:layout_gravity="right" android:layout_weight="0.2"
+		android:id="@+id/rebootManager" />
 
 </LinearLayout>

@@ -18,12 +18,14 @@ public final class R {
         public static final int backupKernel=0x7f050005;
         public static final int backupManagement=0x7f050006;
         public static final int backupSettingsDB=0x7f050000;
-        public static final int downloadMode=0x7f05000b;
+        public static final int cheatCodes=0x7f050008;
+        public static final int downloadMode=0x7f05000d;
+        public static final int editSettings=0x7f050009;
         public static final int installKernel=0x7f050004;
         public static final int kernelHacking=0x7f050007;
-        public static final int normalReboot=0x7f050009;
-        public static final int rebootManager=0x7f050008;
-        public static final int recoveryMode=0x7f05000a;
+        public static final int normalReboot=0x7f05000b;
+        public static final int rebootManager=0x7f05000a;
+        public static final int recoveryMode=0x7f05000c;
         public static final int restoreEFS=0x7f050003;
         public static final int restoreSettingsDB=0x7f050001;
     }
