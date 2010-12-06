@@ -4,19 +4,19 @@
 	android:layout_height="fill_parent">
 
 	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Backup and Restore" android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/backupManagement"/>
+		android:text="Backup settings.db" android:layout_gravity="right"
+		android:layout_weight="0.2" android:id="@+id/backupSettingsDB" />
 	
 	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Kernel hacking" android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/kernelHacking" />
+		android:text="Restore settings.db" android:layout_gravity="right"
+		android:layout_weight="0.2" android:id="@+id/restoreSettingsDB" />
 
 	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Do other stuff" android:layout_gravity="right"
-		android:layout_weight="0.2" android:onClick="" />
+		android:text="Backup /efs" android:layout_gravity="right"
+		android:layout_weight="0.2" android:id="@+id/backupEFS" />
 
 	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Reboot to .." android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/rebootManager" />
+		android:text="Restore /efs" android:layout_gravity="right"
+		android:layout_weight="0.2" android:id="@+id/restoreEFS" />
 
 </LinearLayout>
