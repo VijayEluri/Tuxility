@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,8 +33,10 @@ public class KernelHacking extends Activity implements OnClickListener{
 			tuxHelper.backupKernel("backup");
 		}
 		else if (findViewById(view.getId()).equals(findViewById(R.id.installKernel))) {
-			tuxHelper.showMessage("Installing kernel");
-			tuxHelper.installKernel("");
+			Intent nextIntent = new Intent(Intent.ACTION_VIEW);
+			nextIntent.setClassName(this, FileChooser.class.getName());
+			startActivity(nextIntent);
+			tuxHelper.installKernel(tuxHelper.getChoosenFile());
 		}
 		
 	}
