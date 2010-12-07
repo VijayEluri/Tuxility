@@ -27,3 +27,9 @@ TODO:
 	- CheatCodes :D
 	- System information
 	- Change system Font - Socket84
+    - Use bmlunlock + dd(bs=4096) instead of redbend:ua
+        dd if=zImage of=/dev/block/bml7 bs=4096 count=1920
+    - Enhance security, dont let redbend reside on the sdcard
+    - Use md5 checksum for redbend
+
+
