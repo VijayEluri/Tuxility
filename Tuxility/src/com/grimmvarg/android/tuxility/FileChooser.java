@@ -42,7 +42,9 @@ public class FileChooser extends ListActivity {
         if (path.isDirectory()) {
             File[] directory = path.listFiles();
             for (File file : directory) {
-            	fileList.add(file.getName());
+            	if(!file.getName().contains(".")){
+            		fileList.add(file.getName());
+            	}
             }
         }
     }

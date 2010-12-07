@@ -3,24 +3,14 @@ package com.grimmvarg.android.tuxility;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.text.ChoiceFormat;
 
-import android.R.bool;
-import android.R.string;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.AssetManager;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,12 +21,9 @@ public class TuxHelper {
 	private Process suShell = null;
 	private Process userShell = null;
 	private Context tuxilityContext;
-	private static TuxHelper instance;
+	private static TuxHelper instance = null;
 	private String choosenFile = "";
 
-	private TuxHelper(){
-		
-	}
 	private TuxHelper(Context context){
 		tuxilityContext = context;
 		File tuxilityDir = new File(tuxilityPath);
@@ -52,8 +39,9 @@ public class TuxHelper {
 	            OutputStream out=new FileOutputStream(tuxilityPath + "redbend_ua" );
 	            byte buf[]=new byte[1024];
 	            int len;
-	            while((len=inputStream.read(buf))>0)
-	            out.write(buf,0,len);
+	            while((len=inputStream.read(buf))>0){
+	            	out.write(buf,0,len);
+	            }
 	            out.close();
 	            inputStream.close();
 		        showMessage("Setup Completed");
@@ -66,9 +54,6 @@ public class TuxHelper {
 		}
 		
 
-	}
-
-	public void setup(Context context) {
 	}
 
 	public void backupSettingsDB() {
@@ -108,7 +93,7 @@ public class TuxHelper {
 	private void execute(String command, Boolean su){
 		Process shell;
 		DataOutputStream toProcess = null;
-		
+
 		try {
 			if(su){
 				if(suShell == null) suShell = Runtime.getRuntime().exec("su");
@@ -119,25 +104,18 @@ public class TuxHelper {
 			}
 
 			toProcess = new DataOutputStream(shell.getOutputStream());
+
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
 			toProcess.writeBytes(command + "\n");
 			toProcess.flush();
+
 		} catch (IOException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString());
-		} 
+		}
 	}
 	
 	public void reboot(String type){
 		execute("reboot " + type , true);
-	}
-	
-	public static TuxHelper getInstance() {
-		if(instance == null){
-			instance = new TuxHelper();
-		}
-		
-		return instance;
-
 	}
 
 	public static TuxHelper getInstance(Context applicationContext) {
@@ -145,6 +123,10 @@ public class TuxHelper {
 			instance = new TuxHelper(applicationContext);
 		}
 		
+		return instance;
+	}
+	
+	public static TuxHelper getInstance() {
 		return instance;
 	}
 	

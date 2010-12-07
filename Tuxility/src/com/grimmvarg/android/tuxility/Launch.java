@@ -21,19 +21,21 @@ public class Launch extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	TuxHelper.getInstance(getApplicationContext());
         setContentView(R.layout.main);
-        
-    	if(tuxHelper == null){
-    		TuxHelper.getInstance(getApplicationContext());
-    	}
         
     	Button backupManagement = (Button)findViewById(R.id.backupManagement);
     	Button kernelHacking = (Button)findViewById(R.id.kernelHacking);
     	Button rebootManager = (Button)findViewById(R.id.rebootManager);
+    	Button editSettings = (Button)findViewById(R.id.editSettings);
+    	Button cheatCodes = (Button)findViewById(R.id.cheatCodes);
+    	
     	
     	backupManagement.setOnClickListener(this);
     	kernelHacking.setOnClickListener(this);
     	rebootManager.setOnClickListener(this);
+    	editSettings.setOnClickListener(this);
+    	cheatCodes.setOnClickListener(this);
     }
 
     
@@ -48,6 +50,7 @@ public class Launch extends Activity implements OnClickListener {
 
 	public void onClick(View view) {
 		Intent nextIntent = new Intent(Intent.ACTION_VIEW);
+		Boolean hack = true;
 		
 		if(findViewById(view.getId()).equals(findViewById(R.id.backupManagement))){
 			nextIntent.setClassName(this, BackupManagement.class.getName());
@@ -58,9 +61,23 @@ public class Launch extends Activity implements OnClickListener {
 		else if (findViewById(view.getId()).equals(findViewById(R.id.rebootManager))) {
 			nextIntent.setClassName(this, RebootManager.class.getName());
 		}
+		else if (findViewById(view.getId()).equals(findViewById(R.id.editSettings))) {
+			//nextIntent.setClassName(this, EditSettings.class.getName());
+			showMessage("not yet done");
+			hack = false;
+		}
+		else if (findViewById(view.getId()).equals(findViewById(R.id.cheatCodes))) {
+//			nextIntent.setClassName(this, CheatCodes.class.getName());
+			showMessage("not yet done");
+			hack = false;
+		}
 		
-		startActivity(nextIntent);
+		if(hack) startActivity(nextIntent);
 		
+	}
+	
+	public void notDone(){
+		tuxHelper.showMessage("Not yet done");
 	}
     
     
