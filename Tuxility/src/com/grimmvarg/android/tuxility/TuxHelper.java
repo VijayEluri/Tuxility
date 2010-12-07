@@ -166,5 +166,14 @@ public class TuxHelper {
 		execute("rm /data/system/batterystats.bin", true);
 		
 	}
+	
+	public void toggleMediaScanner(Boolean state){
+		if(state){
+			execute("pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", true);
+		}
+		else{
+			execute("pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", true);
+		}
+	}
 
 }

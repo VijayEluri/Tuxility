@@ -27,32 +27,17 @@ public class Launch extends Activity implements OnClickListener {
     	Button backupManagement = (Button)findViewById(R.id.backupManagement);
     	Button kernelHacking = (Button)findViewById(R.id.kernelHacking);
     	Button rebootManager = (Button)findViewById(R.id.rebootManager);
-    	Button editSettings = (Button)findViewById(R.id.editSettings);
-    	Button cheatCodes = (Button)findViewById(R.id.cheatCodes);
-    	Button calibrationTools = (Button)findViewById(R.id.calibrationTools);
+    	Button phoneSettings = (Button)findViewById(R.id.phonesettingsandtweaks);
     	
     	
     	backupManagement.setOnClickListener(this);
     	kernelHacking.setOnClickListener(this);
     	rebootManager.setOnClickListener(this);
-    	editSettings.setOnClickListener(this);
-    	cheatCodes.setOnClickListener(this);
-    	calibrationTools.setOnClickListener(this);
-    }
-
-    
-    public void showMessage(String message){
-    	Context context = getApplicationContext();
-    	CharSequence text = message;
-    	int duration = Toast.LENGTH_SHORT;
-
-    	Toast toast = Toast.makeText(context, text, duration);
-    	toast.show();
+    	phoneSettings.setOnClickListener(this);
     }
 
 	public void onClick(View view) {
 		Intent nextIntent = new Intent(Intent.ACTION_VIEW);
-		Boolean hack = true;
 		
 		switch (view.getId()) {
 		case R.id.backupManagement:
@@ -64,28 +49,13 @@ public class Launch extends Activity implements OnClickListener {
 		case R.id.rebootManager:
 			nextIntent.setClassName(this, RebootManager.class.getName());
 			break;
-		case R.id.editSettings:
-//			nextIntent.setClassName(this, EditSettings.class.getName());
-			showMessage("not yet done");
-			hack = false;
-			break;
-		case R.id.cheatCodes:
-//			nextIntent.setClassName(this, CheatCodes.class.getName());
-			showMessage("not yet done");
-			hack = false;
-			break;
-		case R.id.calibrationTools:
-			nextIntent.setClassName(this, CalibrationTools.class.getName());
+		case R.id.phonesettingsandtweaks:
+			nextIntent.setClassName(this, PhoneSettingsAndTweaks.class.getName());
 			break;
 		}
 		
-		if(hack) startActivity(nextIntent);
+	startActivity(nextIntent);
 		
 	}
-	
-	public void notDone(){
-		tuxHelper.showMessage("Not yet done");
-	}
-    
     
 }

@@ -14,18 +14,9 @@
 		android:id="@+id/kernelHacking" />
 
 	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Cheat codes"
-		android:layout_gravity="right" android:layout_weight="0.2" android:id="@+id/cheatCodes" />
-
-	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Edit settings.db"
+		android:layout_height="wrap_content" android:text="Phone settings and tweaks"
 		android:layout_gravity="right" android:layout_weight="0.2"
-		android:id="@+id/editSettings" />
-
-	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Calibration tools"
-		android:layout_gravity="right" android:layout_weight="0.2"
-		android:id="@+id/calibrationTools" />
+		android:id="@+id/phonesettingsandtweaks" />
 
 	<Button android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="Reboot to .."
