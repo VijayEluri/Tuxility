@@ -162,4 +162,9 @@ public class TuxHelper {
 
 	}
 
+	public void clearBatteryStats() {
+		execute("rm /data/system/batterystats.bin", true);
+		
+	}
+
 }

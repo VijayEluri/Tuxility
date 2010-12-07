@@ -27,18 +27,21 @@ public class KernelHacking extends Activity implements OnClickListener{
     	backupKernel.setOnClickListener(this);
     	installKernel.setOnClickListener(this);
 	}
-	
-	public void onClick(View view) {
-		if (findViewById(view.getId()).equals(findViewById(R.id.backupKernel))) {
+
+	public void onClick(View view) {		
+		switch (view.getId()) {
+		case R.id.backupKernel:
 			tuxHelper.showMessage("Backing up kernel");
 			tuxHelper.backupKernel("backup");
-		}
-		else if (findViewById(view.getId()).equals(findViewById(R.id.installKernel))) {
+			break;
+		case R.id.installKernel:
 			Intent nextIntent = new Intent(Intent.ACTION_VIEW);
 			nextIntent.setClassName(this, FileChooser.class.getName());
 			nextIntent.putExtra("kernelPath", "");
 			startActivityForResult(nextIntent, 1);
+			break;
 		}
+
 		
 	}
 	

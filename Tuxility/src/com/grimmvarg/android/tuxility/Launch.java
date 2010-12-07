@@ -29,6 +29,7 @@ public class Launch extends Activity implements OnClickListener {
     	Button rebootManager = (Button)findViewById(R.id.rebootManager);
     	Button editSettings = (Button)findViewById(R.id.editSettings);
     	Button cheatCodes = (Button)findViewById(R.id.cheatCodes);
+    	Button calibrationTools = (Button)findViewById(R.id.calibrationTools);
     	
     	
     	backupManagement.setOnClickListener(this);
@@ -36,6 +37,7 @@ public class Launch extends Activity implements OnClickListener {
     	rebootManager.setOnClickListener(this);
     	editSettings.setOnClickListener(this);
     	cheatCodes.setOnClickListener(this);
+    	calibrationTools.setOnClickListener(this);
     }
 
     
@@ -52,24 +54,29 @@ public class Launch extends Activity implements OnClickListener {
 		Intent nextIntent = new Intent(Intent.ACTION_VIEW);
 		Boolean hack = true;
 		
-		if(findViewById(view.getId()).equals(findViewById(R.id.backupManagement))){
+		switch (view.getId()) {
+		case R.id.backupManagement:
 			nextIntent.setClassName(this, BackupManagement.class.getName());
-		}
-		else if (findViewById(view.getId()).equals(findViewById(R.id.kernelHacking))) {
+			break;
+		case R.id.kernelHacking:
 			nextIntent.setClassName(this, KernelHacking.class.getName());
-		}
-		else if (findViewById(view.getId()).equals(findViewById(R.id.rebootManager))) {
+			break;
+		case R.id.rebootManager:
 			nextIntent.setClassName(this, RebootManager.class.getName());
-		}
-		else if (findViewById(view.getId()).equals(findViewById(R.id.editSettings))) {
-			//nextIntent.setClassName(this, EditSettings.class.getName());
+			break;
+		case R.id.editSettings:
+//			nextIntent.setClassName(this, EditSettings.class.getName());
 			showMessage("not yet done");
 			hack = false;
-		}
-		else if (findViewById(view.getId()).equals(findViewById(R.id.cheatCodes))) {
+			break;
+		case R.id.cheatCodes:
 //			nextIntent.setClassName(this, CheatCodes.class.getName());
 			showMessage("not yet done");
 			hack = false;
+			break;
+		case R.id.calibrationTools:
+			nextIntent.setClassName(this, CalibrationTools.class.getName());
+			break;
 		}
 		
 		if(hack) startActivity(nextIntent);

@@ -24,15 +24,19 @@ public class RebootManager extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View view) {
-		if (findViewById(view.getId()).equals(findViewById(R.id.normalReboot))) {
+		switch (view.getId()) {
+		case R.id.normalReboot:
 			tuxHelper.showMessage("Normal Reboot");
 			tuxHelper.reboot("");
-		} else if (findViewById(view.getId()).equals(findViewById(R.id.recoveryMode))) {
+			break;
+		case R.id.recoveryMode:
 			tuxHelper.showMessage("Recovery Mode");
 			tuxHelper.reboot("recovery");
-		} else if (findViewById(view.getId()).equals(findViewById(R.id.downloadMode))) {
+			break;
+		case R.id.downloadMode:
 			tuxHelper.showMessage("Download Mode");
 			tuxHelper.reboot("download");
+			break;
 		}
 
 	}
