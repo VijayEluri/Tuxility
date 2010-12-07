@@ -31,7 +31,6 @@ public class KernelHacking extends Activity implements OnClickListener{
 	public void onClick(View view) {		
 		switch (view.getId()) {
 		case R.id.backupKernel:
-			tuxHelper.showMessage("Backing up kernel");
 			tuxHelper.backupKernel("backup");
 			break;
 		case R.id.installKernel:

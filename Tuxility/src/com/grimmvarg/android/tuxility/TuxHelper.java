@@ -95,6 +95,7 @@ public class TuxHelper {
 	public void backupKernel(String name) {
 		name = now();
 		execute("cat /dev/block/bml7 > " + backupPath + name + "-kernel", true);
+		showMessage("Backed up as: " + name + "-kernel");
 	}
 
 	private void execute(String command, Boolean su) {
@@ -111,7 +112,6 @@ public class TuxHelper {
 					userShell = Runtime.getRuntime().exec("sh");
 				shell = userShell;
 			}
-
 			toProcess = new DataOutputStream(shell.getOutputStream());
 
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
@@ -121,6 +121,7 @@ public class TuxHelper {
 		} catch (IOException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString());
 		}
+		
 	}
 
 	public void reboot(String type) {
@@ -164,15 +165,18 @@ public class TuxHelper {
 
 	public void clearBatteryStats() {
 		execute("rm /data/system/batterystats.bin", true);
-		
+
 	}
-	
-	public void toggleMediaScanner(Boolean state){
-		if(state){
-			execute("pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", true);
-		}
-		else{
-			execute("pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", true);
+
+	public void toggleMediaScanner(Boolean state) {
+		if (state) {
+			execute(
+					"pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",
+					true);
+		} else {
+			execute(
+					"pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",
+					true);
 		}
 	}
 

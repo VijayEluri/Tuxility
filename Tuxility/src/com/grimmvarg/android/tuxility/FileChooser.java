@@ -42,9 +42,9 @@ public class FileChooser extends ListActivity {
         if (path.isDirectory()) {
             File[] directory = path.listFiles();
             for (File file : directory) {
-            	if(!file.getName().contains(".")){
+            	//if(file.getName().contains(".tar")){
             		fileList.add(file.getName());
-            	}
+            	//}
             }
         }
     }
@@ -62,8 +62,14 @@ public class FileChooser extends ListActivity {
         File pickedFile = new File(workingDir + "/" + fileList.get(position));
         if(!pickedFile.isDirectory()){
         	tuxHelper.setChoosenFile(pickedFile.getAbsolutePath());
-        	setResult(RESULT_OK);
-            finish();
+        	if(!pickedFile.getName().contains(".")){
+        		setResult(RESULT_OK);
+        	}
+        	else {
+        		setResult(RESULT_CANCELED);
+        		tuxHelper.showMessage("Wrong filetype!");
+			}
+        	finish();
         }else{
         	refresh(pickedFile);
         }
