@@ -62,7 +62,8 @@ public class FileChooser extends ListActivity {
         File pickedFile = new File(workingDir + "/" + fileList.get(position));
         if(!pickedFile.isDirectory()){
         	tuxHelper.setChoosenFile(pickedFile.getAbsolutePath());
-        	if(!pickedFile.getName().contains(".")){
+        	String filename = pickedFile.getName();
+        	if((!filename.contains(".")) || (filename.contains(".tar"))){
         		setResult(RESULT_OK);
         	}
         	else {

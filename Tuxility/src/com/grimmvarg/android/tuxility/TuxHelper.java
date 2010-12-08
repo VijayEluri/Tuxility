@@ -1,6 +1,7 @@
 package com.grimmvarg.android.tuxility;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.provider.UserDictionary.Words;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class TuxHelper {
 		tuxilityContext = context;
 		File tuxilityDir = new File(tuxilityPath);
 		File backupDir = new File(backupPath);
+
 		if (!tuxilityDir.exists()) {
 			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in "
 					+ tuxilityDir.toString());
@@ -85,11 +88,22 @@ public class TuxHelper {
 
 	}
 
+	public String unTar(String tarFile) {
+		String timeStamp = now();
+		String path = "/cache/" + timeStamp + "/";
+		execute("mkdir " + path, true);
+		execute("tar " + "-C " + path + " -xf " + tarFile, true);
+		return path;
+	}
+
 	public void installKernel(String kernelPath) {
+		if (kernelPath.contains(".tar")){
+			kernelPath = unTar(kernelPath) + "zImage";
+		}
+		showMessage("installing" + kernelPath);
 		execute("cat " + tuxilityPath + "redbend_ua > /data/redbend_ua", true);
 		execute("chmod 755 /data/redbend_ua", true);
-		execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7",
-				true);
+		execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7",true);
 	}
 
 	public void backupKernel(String name) {
@@ -119,9 +133,9 @@ public class TuxHelper {
 			toProcess.flush();
 
 		} catch (IOException e) {
-			Log.v("<--- CLIHandler - Execute() --->", e.toString());
-		}
-		
+			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
+		} 
+
 	}
 
 	public void reboot(String type) {
