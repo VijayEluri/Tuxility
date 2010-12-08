@@ -28,11 +28,8 @@ public class PhoneSettingsAndTweaks extends Activity implements OnClickListener 
 	}
 
 	public void onClick(View view) {
-		if (view.getId()== R.id.clearBatteryStats) {
-
-		} else if (view.getId()== R.id.showGradient) {
-			
-		}
+		Intent nextIntent = new Intent(Intent.ACTION_VIEW);
+		
 		switch (view.getId()) {
 		case R.id.clearBatteryStats:
 			tuxHelper.showMessage("Clearing batterystats");
@@ -42,8 +39,8 @@ public class PhoneSettingsAndTweaks extends Activity implements OnClickListener 
 			tuxHelper.showMessage("Not done yet");
 			break;
 		case R.id.editSettings:
-	//		nextIntent.setClassName(this, EditSettings.class.getName());
-			tuxHelper.showMessage("not yet done");
+			nextIntent.setClassName(this, SettingsEditor.class.getName());
+			startActivity(nextIntent);
 			break;
 		case R.id.cheatCodes:
 	//		nextIntent.setClassName(this, CheatCodes.class.getName());

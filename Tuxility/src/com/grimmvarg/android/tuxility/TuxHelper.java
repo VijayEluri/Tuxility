@@ -10,10 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.provider.UserDictionary.Words;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,15 +29,17 @@ public class TuxHelper {
 	private Context tuxilityContext;
 	private static TuxHelper instance = null;
 	private String choosenFile = "";
+	private DatabaseHandler dbHandler;
+	private String settingsTemp = "/sdcard/.tuxility/.settings.db.temp";
 
 	private TuxHelper(Context context) {
 		tuxilityContext = context;
 		File tuxilityDir = new File(tuxilityPath);
 		File backupDir = new File(backupPath);
+		execute("sh", true);
 
 		if (!tuxilityDir.exists()) {
-			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in "
-					+ tuxilityDir.toString());
+			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in " + tuxilityDir.toString());
 			tuxilityDir.mkdir();
 			backupDir.mkdir();
 			AssetManager assetManager = context.getAssets();
@@ -192,6 +196,35 @@ public class TuxHelper {
 					"pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",
 					true);
 		}
+	}
+
+	public ArrayList<String> getSettingsList() {
+		ArrayList<String> results = new ArrayList<String>();
+		Cursor resultCursor = dbHandler.doQuery("select name, value from secure");
+		
+		if(!(resultCursor == null)){
+			while(resultCursor.moveToNext()){
+				String name = resultCursor.getString(resultCursor.getColumnIndex("name"));
+				int value = resultCursor.getInt(resultCursor.getColumnIndex("value"));
+				results.add("Name" + name + ",Value: " + value);
+			}
+		}
+		return results;
+		
+	}
+
+	public void checkoutSettings() {
+		execute("cp " + settingsDB + " " + settingsTemp, true);
+		execute("chown 1000:1015 " + settingsTemp, true);
+		execute("chmod 775 " + settingsTemp, true);
+		dbHandler = new DatabaseHandler();
+	}
+	
+	public void checkinSettings(){
+		execute("chown 1000:1000 " + settingsTemp, true);
+		execute("chmod 660 " + settingsTemp, true);
+		execute("cp " + settingsTemp + " " + settingsDB, true);
+		dbHandler.close();
 	}
 
 }
