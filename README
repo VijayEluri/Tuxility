@@ -20,9 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 TODO:
-	- Backup and restore /efs - Curio
+    - Rewrite IF clauses for buttoncliked
 	- Change wifi sleep policy - RyanZa
-	- Delete batterystats - Curio
 	- Infosection - xda
 	- CheatCodes :D
 	- System information
@@ -31,5 +30,23 @@ TODO:
         dd if=zImage of=/dev/block/bml7 bs=4096 count=1920
     - Enhance security, dont let redbend reside on the sdcard
     - Use md5 checksum for redbend
+    - Integrate with insanity rom http://developer.android.com/reference/android/os/Build.html
 
+Changelog:
+0.3
+Install kernel from tar archive  containing zImage or just a zImage
+0.21
+- Toggle mediascanner
+- Restructured the menu
+- Added remove batterystats
+- Backup Kernel now sets date in filename
+- Better filchooser, will not install files with an extension 
+0.2
+
+
+Menu->
+    Backup/Restore & Installation
+    Phone Settings
+    Phone calibration and reseting
+    Reboot Options
 
