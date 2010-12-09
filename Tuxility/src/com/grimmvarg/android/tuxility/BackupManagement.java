@@ -28,19 +28,15 @@ public class BackupManagement extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.backupSettingsDB:
-			tuxHelper.showMessage("Backing up settings.db");
 			tuxHelper.backupSettingsDB();
 			break;
 		case R.id.restoreSettingsDB:
-			tuxHelper.showMessage("Restoring settings.db");
 			tuxHelper.restoreSettingsDB();
 			break;
 		case R.id.backupEFS:
-			tuxHelper.showMessage("Backing up /efs");
 			tuxHelper.backupEFS();
 			break;
 		case R.id.restoreEFS:
-			tuxHelper.showMessage("Restoring /efs");
 			tuxHelper.restoreEFS();
 			break;
 		}

@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.R.string;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -21,7 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class TuxHelper {
-	private String settingsDB = "/dbdata/databases/com.android.providers.settings/settings.db";
+	private String settingsDBPath = "/dbdata/databases/com.android.providers.settings/settings.db";
 	private String backupPath = "/sdcard/.tuxility/backup/";
 	private String tuxilityPath = "/sdcard/.tuxility/";
 	private Process suShell = null;
@@ -36,7 +37,7 @@ public class TuxHelper {
 		tuxilityContext = context;
 		File tuxilityDir = new File(tuxilityPath);
 		File backupDir = new File(backupPath);
-		execute("sh", true);
+		execute("", true);
 
 		if (!tuxilityDir.exists()) {
 			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in " + tuxilityDir.toString());
@@ -68,27 +69,44 @@ public class TuxHelper {
 	}
 
 	public void backupSettingsDB() {
-		Log.v("<--- CLIHandler - BackupSettings() --->",
-				"creating settings.db backup");
-		execute("cp " + settingsDB + " " + backupPath + "settings.db", true);
-
+		File settingsBackup = new File( backupPath + "settings.db");
+		if(settingsBackup.exists()){
+			showMessage("Backup exist!");
+		}else{
+			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", true);
+			if(settingsBackup.exists()) showMessage("Success!");
+		}
 	}
 
 	public void restoreSettingsDB() {
-		Log.v("<--- CLIHandler - RestoreSettings() --->",
-				"restoring settings.db");
-		execute("cp " + settingsDB + " " + backupPath + "settings.db", true);
+		File settingsBackup = new File( backupPath + "settings.db");
+		if(settingsBackup.exists()){
+			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", true);
+			showMessage("Backing up /efs");
+		} else {
+			showMessage("No backup found");
+		}
 
 	}
 
 	public void backupEFS() {
-		Log.v("<--- CLIHandler - BackupEFS() --->", "creating EFS backup");
-		execute("tar zcvf " + backupPath + "efs-backup.tar.gz /efs", true);
+		File efsBackup = new File( backupPath + "efs-backup.tar.gz");
+		if(efsBackup.exists()){
+			showMessage("Backup exist!");
+		} else {
+			execute("tar zcvf " + backupPath + "efs-backup.tar.gz /efs", true);
+			if(efsBackup.exists()) showMessage("Success!");
+		}
 	}
 
 	public void restoreEFS() {
-		Log.v("<--- CLIHandler - RestoreEFS() --->", "restoring EFS");
-		execute("tar xvvf " + backupPath + "efs-backup.tar.gz /efs", true);
+		File efsBackup = new File( backupPath + "efs-backup.tar.gz");
+		if(efsBackup.exists()){
+			execute("tar xvvf " + backupPath + "efs-backup.tar.gz /efs", true);
+			showMessage("Backing up /efs");
+		} else {
+			showMessage("No backup found");
+		}
 
 	}
 
@@ -112,11 +130,17 @@ public class TuxHelper {
 
 	public void backupKernel(String name) {
 		name = now();
+		File kernelBackup = new File(backupPath + name + "-kernel");
 		execute("cat /dev/block/bml7 > " + backupPath + name + "-kernel", true);
-		showMessage("Backed up as: " + name + "-kernel");
+		if(kernelBackup.exists()){
+			showMessage("Backed up as: " + name + "-kernel");
+		}
+		else {
+			showMessage("Backed up failed!");
+		}
 	}
-
-	private void execute(String command, Boolean su) {
+	
+	private synchronized void execute(String command, Boolean su) {
 		Process shell;
 		DataOutputStream toProcess = null;
 
@@ -135,8 +159,11 @@ public class TuxHelper {
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
 			toProcess.writeBytes(command + "\n");
 			toProcess.flush();
+			this.wait(1200);
 
 		} catch (IOException e) {
+			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
+		} catch (InterruptedException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
 		} 
 
@@ -188,13 +215,9 @@ public class TuxHelper {
 
 	public void toggleMediaScanner(Boolean state) {
 		if (state) {
-			execute(
-					"pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",
-					true);
+			execute("pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",true);
 		} else {
-			execute(
-					"pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",
-					true);
+			execute("pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", true);
 		}
 	}
 
@@ -214,7 +237,7 @@ public class TuxHelper {
 	}
 
 	public void checkoutSettings() {
-		execute("cp " + settingsDB + " " + settingsTemp, true);
+		execute("cp " + settingsDBPath + " " + settingsTemp, true);
 		execute("chown 1000:1015 " + settingsTemp, true);
 		execute("chmod 775 " + settingsTemp, true);
 		dbHandler = new DatabaseHandler();
@@ -223,7 +246,7 @@ public class TuxHelper {
 	public void checkinSettings(){
 		execute("chown 1000:1000 " + settingsTemp, true);
 		execute("chmod 660 " + settingsTemp, true);
-		execute("cp " + settingsTemp + " " + settingsDB, true);
+		execute("cp " + settingsTemp + " " + settingsDBPath, true);
 		dbHandler.close();
 	}
 
