@@ -1,6 +1,7 @@
 package com.grimmvarg.android.tuxility;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,6 +10,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,9 +44,7 @@ public class FileChooser extends ListActivity {
         if (path.isDirectory()) {
             File[] directory = path.listFiles();
             for (File file : directory) {
-            	//if(file.getName().contains(".tar")){
-            		fileList.add(file.getName());
-            	//}
+            	fileList.add(file.getName());
             }
         }
     }
@@ -72,7 +72,12 @@ public class FileChooser extends ListActivity {
 			}
         	finish();
         }else{
-        	refresh(pickedFile);
+        	try {
+				refresh(new File(pickedFile.getCanonicalPath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.v("<--- Filechooser -->", e.toString());
+			}
         }
         
     }

@@ -44,7 +44,7 @@ public class PhoneSettingsAndTweaks extends Activity implements OnClickListener 
 			break;
 		case R.id.cheatCodes:
 	//		nextIntent.setClassName(this, CheatCodes.class.getName());
-			tuxHelper.showMessage("not yet done");
+			tuxHelper.showMessage("Not done yet");
 			break;
 		}
 

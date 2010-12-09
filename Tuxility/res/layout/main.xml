@@ -3,24 +3,34 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
 
-	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Backup and Restore"
-		android:layout_gravity="right" android:layout_weight="0.2"
-		android:id="@+id/backupManagement" />
 
-	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Kernel hacking"
-		android:layout_gravity="right" android:layout_weight="0.2"
-		android:id="@+id/kernelHacking" />
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="wrap_content">
 
-	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Phone settings and tweaks"
-		android:layout_gravity="right" android:layout_weight="0.2"
-		android:id="@+id/phonesettingsandtweaks" />
+		<Button android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Backup and Restore"
+			android:layout_gravity="right" android:layout_weight="0.2"
+			android:id="@+id/backupManagement" />
 
-	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Reboot to .."
-		android:layout_gravity="right" android:layout_weight="0.2"
-		android:id="@+id/rebootManager" />
+		<Button android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Kernel hacking"
+			android:layout_gravity="right" android:layout_weight="0.2"
+			android:id="@+id/kernelHacking" />
+
+		<Button android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Phone settings and tweaks"
+			android:layout_gravity="right" android:layout_weight="0.2"
+			android:id="@+id/phonesettingsandtweaks" />
+
+		<Button android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Reboot to .."
+			android:layout_gravity="right" android:layout_weight="0.2"
+			android:id="@+id/rebootManager" />
+
+
+	</LinearLayout>
+		
 
 </LinearLayout>
+
+

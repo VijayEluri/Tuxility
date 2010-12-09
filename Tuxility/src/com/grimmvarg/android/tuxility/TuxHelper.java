@@ -84,7 +84,7 @@ public class TuxHelper {
 			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", true);
 			showMessage("Backing up /efs");
 		} else {
-			showMessage("No backup found");
+			showMessage("No backup found!");
 		}
 
 	}
@@ -105,7 +105,7 @@ public class TuxHelper {
 			execute("tar xvvf " + backupPath + "efs-backup.tar.gz /efs", true);
 			showMessage("Backing up /efs");
 		} else {
-			showMessage("No backup found");
+			showMessage("No backup found!");
 		}
 
 	}
@@ -122,9 +122,10 @@ public class TuxHelper {
 		if (kernelPath.contains(".tar")){
 			kernelPath = unTar(kernelPath) + "zImage";
 		}
-		showMessage("installing" + kernelPath);
+		showMessage("Preparing for flash..");
 		execute("cat " + tuxilityPath + "redbend_ua > /data/redbend_ua", true);
 		execute("chmod 755 /data/redbend_ua", true);
+		showMessage("Flashing and Rebooting..");
 		execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7",true);
 	}
 
@@ -159,14 +160,14 @@ public class TuxHelper {
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
 			toProcess.writeBytes(command + "\n");
 			toProcess.flush();
-			this.wait(1200);
+			// A temporary neccessary hack
+			this.wait(1000);
 
 		} catch (IOException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
 		} catch (InterruptedException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
 		} 
-
 	}
 
 	public void reboot(String type) {
@@ -209,7 +210,9 @@ public class TuxHelper {
 	}
 
 	public void clearBatteryStats() {
+		File batteryStats = new File("/data/system/batterystats.bin");
 		execute("rm /data/system/batterystats.bin", true);
+		if(!batteryStats.exists()) showMessage("Batterystats cleared!");
 
 	}
 
@@ -237,6 +240,7 @@ public class TuxHelper {
 	}
 
 	public void checkoutSettings() {
+		showMessage("Preparing database for editing");
 		execute("cp " + settingsDBPath + " " + settingsTemp, true);
 		execute("chown 1000:1015 " + settingsTemp, true);
 		execute("chmod 775 " + settingsTemp, true);
@@ -244,6 +248,7 @@ public class TuxHelper {
 	}
 	
 	public void checkinSettings(){
+		showMessage("Preparing database for saving");
 		execute("chown 1000:1000 " + settingsTemp, true);
 		execute("chmod 660 " + settingsTemp, true);
 		execute("cp " + settingsTemp + " " + settingsDBPath, true);
