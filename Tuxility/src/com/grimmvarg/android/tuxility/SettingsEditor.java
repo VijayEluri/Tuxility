@@ -1,7 +1,6 @@
 package com.grimmvarg.android.tuxility;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import android.app.ListActivity;
 import android.os.Bundle;
