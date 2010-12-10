@@ -1,5 +1,6 @@
 package com.grimmvarg.android.tuxility;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +33,8 @@ public class TuxHelper {
 		tuxilityContext = context;
 		File tuxilityDir = new File(tuxilityPath);
 		File backupDir = new File(backupPath);
-		execute("", true);
+		// getting root and cleaning up our mess in cache
+		execute("rm -r /cache/tuxility-*", 1);
 
 		if (!tuxilityDir.exists()) {
 			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in " + tuxilityDir.toString());
@@ -68,7 +70,7 @@ public class TuxHelper {
 		if(settingsBackup.exists()){
 			showMessage("Backup exist!");
 		}else{
-			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", true);
+			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", 1);
 			if(settingsBackup.exists()) showMessage("Success!");
 		}
 	}
@@ -76,7 +78,7 @@ public class TuxHelper {
 	public void restoreSettingsDB() {
 		File settingsBackup = new File( backupPath + "settings.db");
 		if(settingsBackup.exists()){
-			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", true);
+			execute("cp " + settingsDBPath + " " + backupPath + "settings.db", 1);
 			showMessage("Backing up /efs");
 		} else {
 			showMessage("No backup found!");
@@ -89,7 +91,7 @@ public class TuxHelper {
 		if(efsBackup.exists()){
 			showMessage("Backup exist!");
 		} else {
-			execute("tar zcvf " + backupPath + "efs-backup.tar.gz /efs", true);
+			execute("tar zcvf " + backupPath + "efs-backup.tar.gz /efs", 1);
 			if(efsBackup.exists()) showMessage("Success!");
 		}
 	}
@@ -97,7 +99,7 @@ public class TuxHelper {
 	public void restoreEFS() {
 		File efsBackup = new File( backupPath + "efs-backup.tar.gz");
 		if(efsBackup.exists()){
-			execute("tar xvvf " + backupPath + "efs-backup.tar.gz /efs", true);
+			execute("tar xvvf " + backupPath + "efs-backup.tar.gz /efs", 1);
 			showMessage("Backing up /efs");
 		} else {
 			showMessage("No backup found!");
@@ -107,41 +109,42 @@ public class TuxHelper {
 
 	public String unTar(String tarFile) {
 		String timeStamp = now();
-		String path = "/cache/" + timeStamp + "/";
-		execute("mkdir " + path, true);
-		execute("tar " + "-C " + path + " -xf " + tarFile, true);
+		String path = "/cache/tuxility-" + timeStamp + "/";
+		execute("mkdir " + path, 1);
+		execute("tar " + "-C " + path + " -xf " + tarFile, 1);
 		return path;
 	}
 
 	public void installKernel(String kernelPath) {
+		showMessage("Preparing for flash..");
 		if (kernelPath.contains(".tar")){
 			kernelPath = unTar(kernelPath) + "zImage";
 		}
-		showMessage("Preparing for flash..");
-		execute("cat " + tuxilityPath + "redbend_ua > /data/redbend_ua", true);
-		execute("chmod 755 /data/redbend_ua", true);
+		execute("cat " + tuxilityPath + "redbend_ua > /data/redbend_ua", 2);
+		execute("chmod 755 /data/redbend_ua", 2);
 		showMessage("Flashing and Rebooting..");
-		execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7",true);
+		execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7", 2);
 	}
 
 	public void backupKernel(String name) {
 		name = now();
-		File kernelBackup = new File(backupPath + name + "-kernel");
-		execute("cat /dev/block/bml7 > " + backupPath + name + "-kernel", true);
+		File kernelBackup = new File(backupPath + name + "-kernelBackup");
+		execute("cat /dev/block/bml7 > " + backupPath + name + "-kernelBackup", 1);
 		if(kernelBackup.exists()){
-			showMessage("Backed up as: " + name + "-kernel");
+			showMessage("Backed up as: " + name + "-kernelBackup");
 		}
 		else {
 			showMessage("Backed up failed!");
 		}
 	}
 	
-	private synchronized void execute(String command, Boolean su) {
+	private synchronized void execute(String command, int mode) {
 		Process shell;
 		DataOutputStream toProcess = null;
+		DataInputStream fromProcess = null;
 
 		try {
-			if (su) {
+			if (mode == 0) {
 				if (suShell == null)
 					suShell = Runtime.getRuntime().exec("su");
 				shell = suShell;
@@ -151,22 +154,26 @@ public class TuxHelper {
 				shell = userShell;
 			}
 			toProcess = new DataOutputStream(shell.getOutputStream());
+			fromProcess = new DataInputStream(shell.getInputStream());
 
+			if(mode != 2) command += " > /dev/null";
+			
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
+			
+			fromProcess.skipBytes(-1);
 			toProcess.writeBytes(command + "\n");
 			toProcess.flush();
-			// A temporary neccessary hack
-			this.wait(1000);
+			toProcess.writeBytes("echo $?\n");
+			toProcess.flush();
+			Log.v("<--- CLIHandler - Execute() --->", command + " result " + fromProcess.readLine());
 
 		} catch (IOException e) {
-			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
-		} catch (InterruptedException e) {
 			Log.v("<--- CLIHandler - Execute() --->", e.toString()); 
 		} 
 	}
 
 	public void reboot(String type) {
-		execute("reboot " + type, true);
+		execute("reboot " + type, 1);
 	}
 
 	public static TuxHelper getInstance(Context applicationContext) {
@@ -206,16 +213,16 @@ public class TuxHelper {
 
 	public void clearBatteryStats() {
 		File batteryStats = new File("/data/system/batterystats.bin");
-		execute("rm /data/system/batterystats.bin", true);
+		execute("rm /data/system/batterystats.bin", 1);
 		if(!batteryStats.exists()) showMessage("Batterystats cleared!");
 
 	}
 
 	public void toggleMediaScanner(Boolean state) {
 		if (state) {
-			execute("pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",true);
+			execute("pm disable com.android.providers.media/com.android.providers.media.MediaScannerReceiver",1);
 		} else {
-			execute("pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", true);
+			execute("pm enable com.android.providers.media/com.android.providers.media.MediaScannerReceiver", 1);
 		}
 	}
 
@@ -236,17 +243,17 @@ public class TuxHelper {
 
 	public void checkoutSettings() {
 		showMessage("Preparing database for editing");
-		execute("cp " + settingsDBPath + " " + settingsTemp, true);
-		execute("chown 1000:1015 " + settingsTemp, true);
-		execute("chmod 775 " + settingsTemp, true);
+		execute("cp " + settingsDBPath + " " + settingsTemp, 1);
+		execute("chown 1000:1015 " + settingsTemp, 1);
+		execute("chmod 775 " + settingsTemp, 1);
 		dbHandler = new DatabaseHandler();
 	}
 	
 	public void checkinSettings(){
 		showMessage("Preparing database for saving");
-		execute("chown 1000:1000 " + settingsTemp, true);
-		execute("chmod 660 " + settingsTemp, true);
-		execute("cp " + settingsTemp + " " + settingsDBPath, true);
+		execute("chown 1000:1000 " + settingsTemp, 1);
+		execute("chmod 660 " + settingsTemp, 1);
+		execute("cp " + settingsTemp + " " + settingsDBPath, 1);
 		dbHandler.close();
 	}
 
