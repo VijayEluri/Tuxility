@@ -145,13 +145,13 @@ public class TuxHelper {
 
 		try {
 			if (mode == 0) {
-				if (suShell == null)
-					suShell = Runtime.getRuntime().exec("su");
-				shell = suShell;
-			} else {
 				if (userShell == null)
 					userShell = Runtime.getRuntime().exec("sh");
 				shell = userShell;
+			} else {
+				if (suShell == null)
+					suShell = Runtime.getRuntime().exec("su");
+				shell = suShell;
 			}
 			toProcess = new DataOutputStream(shell.getOutputStream());
 			fromProcess = new DataInputStream(shell.getInputStream());
@@ -160,7 +160,6 @@ public class TuxHelper {
 			
 			Log.v("<--- CLIHandler - Execute() --->", "Executing: " + command);
 			
-			fromProcess.skipBytes(-1);
 			toProcess.writeBytes(command + "\n");
 			toProcess.flush();
 			toProcess.writeBytes("echo $?\n");
