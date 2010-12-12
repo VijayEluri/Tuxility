@@ -13,23 +13,42 @@ public class DatabaseHandler {
 
 	private static final String DB_PATH = "/data/data/com.grimmvarg.android.tuxility/databases/settings.db.temp";
 	private OpenHelper openHelper;
+	private SQLiteDatabase settingsDB;
+	private Context context;
 	
 	public DatabaseHandler(Context context) {
+		this.context = context;
+	}
+	
+	public void open(){
 		try{
 			openHelper = new OpenHelper(context, DB_PATH, null, 1);
+			settingsDB = openHelper.getWritableDatabase();
 		} catch (Exception e) {
 			Log.v("<--- DB-Helper --->", e.toString());
 		}
 	}
 
+	public void close() {
+		settingsDB.close();
+		openHelper.close();
+		
+	}
+	
 	public Cursor selectAll(String table) {
-		Cursor resultCursor = openHelper.getReadableDatabase().query(table, null, null, null, null, null, null);
+		Cursor resultCursor = null;
+		try{
+			resultCursor = settingsDB.query(table, null, null, null, null, null, null);
+			
+		} catch (Exception e) {
+			Log.v("<--- DB-Helper --->", e.toString());
+		}
 		return resultCursor;
 	}
 
 	public void doUpdate(String sql) {
 		try{
-			openHelper.getWritableDatabase().execSQL(sql);
+			settingsDB.execSQL(sql);
 			
 		} catch (Exception e) {
 			Log.v("<--- DB-Helper --->", e.toString());
@@ -37,7 +56,12 @@ public class DatabaseHandler {
 	}
 	
 	public void doInsert(String sql){
-		
+		sql = "insert into secure (name, value) values(\"fitte\",\"kuk\")";
+		try{
+			settingsDB.execSQL(sql);			
+		} catch (Exception e) {
+			Log.v("<--- DB-Helper --->", e.toString());
+		}
 	}
 
 

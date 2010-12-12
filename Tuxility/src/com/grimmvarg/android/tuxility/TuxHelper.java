@@ -34,6 +34,7 @@ public class TuxHelper {
 
 	private TuxHelper(Context context) {
 		tuxilityContext = context;
+		dbHandler = new DatabaseHandler(tuxilityContext);
 		File tuxilityDir = new File(tuxilityPath);
 		File backupDir = new File(backupPath);
 		// getting root and cleaning up our mess in cache
@@ -230,15 +231,15 @@ public class TuxHelper {
 
 
 	public void checkoutSettings() {
-		execute("cp " + settingsDBPath + " " + settingsTemp, 1);
-		execute("chown 1000:1000 " + settingsTemp, 1);
-		execute("chmod 777 " + settingsTemp, 1);
-		dbHandler = new DatabaseHandler(tuxilityContext);
+		//execute("cp " + settingsDBPath + " " + settingsTemp, 1);
+		//execute("chown 10045.10045 " + settingsTemp, 1);
+		//execute("chmod 660 " + settingsTemp, 1);
+		settingsOpen();
 	}
 	
 	public void checkinSettings(){
 		showMessage("Preparing database for saving");
-		execute("chown 1000:1000 " + settingsTemp, 1);
+		execute("chown system.system " + settingsTemp, 1);
 		execute("chmod 660 " + settingsTemp, 1);
 		execute("cp " + settingsTemp + " " + settingsDBPath, 1);
 	}
@@ -251,12 +252,20 @@ public class TuxHelper {
 	public void updateSettings(String table, int id, String name, String value) {
 		String sql = "UPDATE " + table + " SET " + name + "=\"" + value + "\" WHERE _id=\"" + id + "\"";
 		dbHandler.doUpdate(sql);
-		
 	}
 	
 	public void addSettingsValues(){
 		String sql = "insert into secure (name, value) values(\"wifi_idle_ms\", \"10000\")";
 		dbHandler.doInsert(sql);
+	}
+
+	public void settingsClose() {
+		dbHandler.close();
+		
+	}
+	
+	public void settingsOpen(){
+		dbHandler.open();
 	}
 
 }

@@ -58,6 +58,7 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 		if(settingsCursor.getString(1) != "wifi_idle_ms"){
 			tuxHelper.addSettingsValues();
 			tuxHelper.showMessage("Adding");
+			settingsCursor = tuxHelper.getSettingsCursor();
 		}
 
 		String columns[] = new String[] { "name", "value" };
@@ -79,10 +80,12 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 		case R.id.saveSettings:
 			tuxHelper.checkinSettings();
 			settingsCursor.close();
+			tuxHelper.settingsClose();
 			finish();
 			break;
 		case R.id.discardSettings:
 			settingsCursor.close();
+			tuxHelper.settingsClose();
 			finish();
 			break;
 		case R.id.ok:
@@ -91,6 +94,7 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 			int id = settingsCursor.getInt(1);
 			tuxHelper.updateSettings("secure", id, "value", value);
 			valueDialog.dismiss();
+			refreshList();
 			break;
 		case R.id.cancel:
 			valueDialog.cancel();
@@ -120,8 +124,6 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 		
 		okButton.setOnClickListener(this);
 		cancelButton.setOnClickListener(this);
-
-
 
 	}
 
