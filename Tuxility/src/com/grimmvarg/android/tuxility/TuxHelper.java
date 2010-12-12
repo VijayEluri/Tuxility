@@ -10,7 +10,10 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.TreeMap;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -27,7 +30,7 @@ public class TuxHelper {
 	private static TuxHelper instance = null;
 	private String choosenFile = "";
 	private DatabaseHandler dbHandler;
-	private String settingsTemp = "/sdcard/.tuxility/.settings.db.temp";
+	private String settingsTemp = "/data/data/com.grimmvarg.android.tuxility/databases/settings.db.temp";
 
 	private TuxHelper(Context context) {
 		tuxilityContext = context;
@@ -225,27 +228,12 @@ public class TuxHelper {
 		}
 	}
 
-	public ArrayList<String> getSettingsList() {
-		ArrayList<String> results = new ArrayList<String>();
-		Cursor resultCursor = dbHandler.doQuery("select name, value from secure");
-		
-		if(!(resultCursor == null)){
-			while(resultCursor.moveToNext()){
-				String name = resultCursor.getString(resultCursor.getColumnIndex("name"));
-				int value = resultCursor.getInt(resultCursor.getColumnIndex("value"));
-				results.add("Name" + name + ",Value: " + value);
-			}
-		}
-		return results;
-		
-	}
 
 	public void checkoutSettings() {
-		showMessage("Preparing database for editing");
 		execute("cp " + settingsDBPath + " " + settingsTemp, 1);
-		execute("chown 1000:1015 " + settingsTemp, 1);
-		execute("chmod 775 " + settingsTemp, 1);
-		dbHandler = new DatabaseHandler();
+		execute("chown 1000:1000 " + settingsTemp, 1);
+		execute("chmod 777 " + settingsTemp, 1);
+		dbHandler = new DatabaseHandler(tuxilityContext);
 	}
 	
 	public void checkinSettings(){
@@ -253,7 +241,22 @@ public class TuxHelper {
 		execute("chown 1000:1000 " + settingsTemp, 1);
 		execute("chmod 660 " + settingsTemp, 1);
 		execute("cp " + settingsTemp + " " + settingsDBPath, 1);
-		dbHandler.close();
+	}
+
+	public Cursor getSettingsCursor() {
+		Cursor resultCursor = dbHandler.selectAll("secure");
+		return resultCursor;
+	}
+
+	public void updateSettings(String table, int id, String name, String value) {
+		String sql = "UPDATE " + table + " SET " + name + "=\"" + value + "\" WHERE _id=\"" + id + "\"";
+		dbHandler.doUpdate(sql);
+		
+	}
+	
+	public void addSettingsValues(){
+		String sql = "insert into secure (name, value) values(\"wifi_idle_ms\", \"10000\")";
+		dbHandler.doInsert(sql);
 	}
 
 }

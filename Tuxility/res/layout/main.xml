@@ -27,9 +27,19 @@
 			android:layout_gravity="right" android:layout_weight="0.2"
 			android:id="@+id/rebootManager" />
 
+		<Button android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Support"
+			android:layout_gravity="right" android:layout_weight="0.2"
+			android:id="@+id/support" />
+
+		<Button android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Buy me a beer :D"
+			android:layout_gravity="right" android:layout_weight="0.2"
+			android:id="@+id/donations" />
+
 
 	</LinearLayout>
-		
+
 
 </LinearLayout>
 
