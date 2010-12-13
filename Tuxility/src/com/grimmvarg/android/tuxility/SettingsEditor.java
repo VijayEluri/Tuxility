@@ -37,6 +37,7 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 	TuxHelper tuxHelper = TuxHelper.getInstance();
 	protected Cursor settingsCursor;
 	protected Dialog valueDialog = null;
+	protected String _id = "-1";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 	private void refreshList() {
 		settingsCursor = tuxHelper.getSettingsCursor();
 		settingsCursor.moveToLast();
-		if(settingsCursor.getString(1) != "wifi_idle_ms"){
+		if(!settingsCursor.getString(1).equals("wifi_idle_ms")){
 			tuxHelper.addSettingsValues();
 			tuxHelper.showMessage("Adding");
 			settingsCursor = tuxHelper.getSettingsCursor();
@@ -71,6 +72,7 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		settingsCursor.moveToPosition(position);
+		_id = settingsCursor.getString(0);
 		showValueDialog(settingsCursor.getString(1), settingsCursor.getString(2));
 		
 	}
@@ -78,22 +80,21 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.saveSettings:
-			tuxHelper.checkinSettings();
 			settingsCursor.close();
-			tuxHelper.settingsClose();
+			tuxHelper.checkinSettings();
 			finish();
 			break;
 		case R.id.discardSettings:
 			settingsCursor.close();
-			tuxHelper.settingsClose();
+			//tuxHelper.settingsClose();
 			finish();
 			break;
 		case R.id.ok:
 			EditText textField = (EditText)valueDialog.findViewById(R.id.new_value);
 			String value = textField.getText().toString();
-			int id = settingsCursor.getInt(1);
-			tuxHelper.updateSettings("secure", id, "value", value);
+			tuxHelper.updateSettings("secure", _id, "value", value);
 			valueDialog.dismiss();
+			settingsCursor.close();
 			refreshList();
 			break;
 		case R.id.cancel:

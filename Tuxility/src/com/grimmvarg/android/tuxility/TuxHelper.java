@@ -30,7 +30,8 @@ public class TuxHelper {
 	private static TuxHelper instance = null;
 	private String choosenFile = "";
 	private DatabaseHandler dbHandler;
-	private String settingsTemp = "/data/data/com.grimmvarg.android.tuxility/databases/settings.db.temp";
+//	private String settingsTemp = "/data/data/com.grimmvarg.android.tuxility/databases/settings.db.temp";
+	private String settingsTemp = tuxilityPath + ".settings.db.temp";
 
 	private TuxHelper(Context context) {
 		tuxilityContext = context;
@@ -231,17 +232,18 @@ public class TuxHelper {
 
 
 	public void checkoutSettings() {
-		//execute("cp " + settingsDBPath + " " + settingsTemp, 1);
-		//execute("chown 10045.10045 " + settingsTemp, 1);
-		//execute("chmod 660 " + settingsTemp, 1);
+		execute("cp " + settingsDBPath + " " + settingsTemp, 1);
+		execute("chown 1001.1015 " + settingsTemp, 1);
+		execute("chmod 777 " + settingsTemp, 1);
 		settingsOpen();
 	}
 	
 	public void checkinSettings(){
-		showMessage("Preparing database for saving");
-		execute("chown system.system " + settingsTemp, 1);
-		execute("chmod 660 " + settingsTemp, 1);
+		settingsClose();
 		execute("cp " + settingsTemp + " " + settingsDBPath, 1);
+		execute("chmod 660 " + settingsDBPath, 1);
+		execute("chown system.system " + settingsDBPath, 1);
+		execute("rm " + settingsTemp, 1);
 	}
 
 	public Cursor getSettingsCursor() {
@@ -249,7 +251,7 @@ public class TuxHelper {
 		return resultCursor;
 	}
 
-	public void updateSettings(String table, int id, String name, String value) {
+	public void updateSettings(String table, String id, String name, String value) {
 		String sql = "UPDATE " + table + " SET " + name + "=\"" + value + "\" WHERE _id=\"" + id + "\"";
 		dbHandler.doUpdate(sql);
 	}

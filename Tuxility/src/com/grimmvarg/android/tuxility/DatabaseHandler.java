@@ -11,7 +11,8 @@ import android.util.Log;
 
 public class DatabaseHandler {
 
-	private static final String DB_PATH = "/data/data/com.grimmvarg.android.tuxility/databases/settings.db.temp";
+//	private static final String DB_PATH = "/data/data/com.grimmvarg.android.tuxility/databases/settings.db.temp";
+	private static final String DB_PATH = "/sdcard/.tuxility/.settings.db.temp";
 	private OpenHelper openHelper;
 	private SQLiteDatabase settingsDB;
 	private Context context;
@@ -49,14 +50,13 @@ public class DatabaseHandler {
 	public void doUpdate(String sql) {
 		try{
 			settingsDB.execSQL(sql);
-			
+			Log.v("<--- DB-Helper --->", "executing: " + sql);
 		} catch (Exception e) {
 			Log.v("<--- DB-Helper --->", e.toString());
 		}
 	}
 	
 	public void doInsert(String sql){
-		sql = "insert into secure (name, value) values(\"fitte\",\"kuk\")";
 		try{
 			settingsDB.execSQL(sql);			
 		} catch (Exception e) {
