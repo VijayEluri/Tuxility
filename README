@@ -1,4 +1,4 @@
-	
+http://developer.android.com/reference/android/provider/Settings.System.html	
 	Hi!
 
     I create this software for my own personal intereset and simply share it because
@@ -20,6 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 TODO:
+   https://github.com/leonnib4/development_apps_SpareParts/tree/froyo/src/com/android/leo_parts
+    - Feil tekst i restore efs
 	- View logs
 	- Get rid of getChoosedfile;
 	- Change wifi sleep policy - RyanZa
@@ -32,6 +34,7 @@ TODO:
     - Enhance security, dont let redbend reside on the sdcard
     - Use md5 checksum for redbend
     - Integrate with insanity rom http://developer.android.com/reference/android/os/Build.html
+    - NOT FOUND SETTINGS
 
 Changelog:
 0.3
