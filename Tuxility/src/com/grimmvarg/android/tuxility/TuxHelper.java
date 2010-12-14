@@ -105,7 +105,7 @@ public class TuxHelper {
 		File efsBackup = new File( backupPath + "efs-backup.tar.gz");
 		if(efsBackup.exists()){
 			execute("tar xvvf " + backupPath + "efs-backup.tar.gz /efs", 1);
-			showMessage("Backing up /efs");
+			showMessage("Restoring /efs");
 		} else {
 			showMessage("No backup found!");
 		}

@@ -55,18 +55,16 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 
 	private void refreshList() {
 		settingsCursor = tuxHelper.getSettingsCursor();
-		settingsCursor.moveToLast();
-		if(!settingsCursor.getString(1).equals("wifi_idle_ms")){
-			tuxHelper.addSettingsValues();
-			tuxHelper.showMessage("Adding");
-			settingsCursor = tuxHelper.getSettingsCursor();
+		if(settingsCursor != null){
+			String columns[] = new String[] { "name", "value" };
+			int[] to = new int[] { R.id.name_entry };
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.settingslistentry, settingsCursor, columns, to);
+			setListAdapter(adapter);
 		}
-
-		String columns[] = new String[] { "name", "value" };
-		int[] to = new int[] { R.id.name_entry };
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.settingslistentry, settingsCursor, columns, to);
-		setListAdapter(adapter);
-
+		else {
+			tuxHelper.showMessage("Could not find your settings.db");
+			finish();
+		}
 	}
 
 	@Override
@@ -88,6 +86,9 @@ public class SettingsEditor extends ListActivity implements OnClickListener {
 			settingsCursor.close();
 			//tuxHelper.settingsClose();
 			finish();
+			break;
+		case R.id.addSetting:
+			showDialog(-1);
 			break;
 		case R.id.ok:
 			EditText textField = (EditText)valueDialog.findViewById(R.id.new_value);

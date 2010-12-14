@@ -12,15 +12,17 @@
 	</LinearLayout>
 
 	<LinearLayout android:orientation="horizontal"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_horizontal">
-		
-		<Button android:layout_width="150px"
-			android:layout_height="wrap_content" android:text="Save"
-			android:layout_gravity="right" android:id="@+id/saveSettings" />
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:gravity="center_horizontal">
 
-		<Button android:layout_width="150px"
-			android:layout_height="wrap_content" android:text="Discard"
-			android:layout_gravity="right" android:id="@+id/discardSettings" />
+		<Button android:layout_width="150px" android:layout_height="wrap_content"
+			android:text="Save" android:layout_gravity="right" android:id="@+id/saveSettings" />
+
+		<Button android:layout_width="150px" android:layout_height="wrap_content"
+			android:text="Discard" android:layout_gravity="right" android:id="@+id/discardSettings" />
+
+		<Button android:layout_width="150px" android:layout_height="wrap_content"
+			android:text="Add setting" android:layout_gravity="right" android:id="@+id/addSetting" />
 
 	</LinearLayout>
 </LinearLayout>
