@@ -39,7 +39,7 @@ public class PhoneSettingsAndTweaks extends Activity implements OnClickListener 
 			tuxHelper.showMessage("Not done yet");
 			break;
 		case R.id.editSettings:
-			nextIntent.setClassName(this, SettingsEditor.class.getName());
+			nextIntent.setClassName(this, Old_SettingsEditor.class.getName());
 			startActivity(nextIntent);
 			break;
 		case R.id.cheatCodes:
