@@ -19,12 +19,12 @@ public class PhoneSettingsAndTweaks extends Activity implements OnClickListener 
 		Button clearBatteryStats = (Button) findViewById(R.id.clearBatteryStats);
 		Button showGradient = (Button) findViewById(R.id.showGradient);
     	Button editSettings = (Button)findViewById(R.id.editSettings);
-    	Button cheatCodes = (Button)findViewById(R.id.cheatCodes);
+    	Button phoneCodes = (Button)findViewById(R.id.phoneCodes);
 
 		clearBatteryStats.setOnClickListener(this);
 		showGradient.setOnClickListener(this);
     	editSettings.setOnClickListener(this);
-    	cheatCodes.setOnClickListener(this);
+    	phoneCodes.setOnClickListener(this);
 	}
 
 	public void onClick(View view) {
@@ -39,12 +39,11 @@ public class PhoneSettingsAndTweaks extends Activity implements OnClickListener 
 			tuxHelper.showMessage("Not done yet");
 			break;
 		case R.id.editSettings:
-			nextIntent.setClassName(this, Old_SettingsEditor.class.getName());
-			startActivity(nextIntent);
-			break;
-		case R.id.cheatCodes:
-	//		nextIntent.setClassName(this, CheatCodes.class.getName());
 			tuxHelper.showMessage("Not done yet");
+			break;
+		case R.id.phoneCodes:
+			nextIntent.setClassName(this, PhoneCodes.class.getName());
+			startActivity(nextIntent);
 			break;
 		}
 

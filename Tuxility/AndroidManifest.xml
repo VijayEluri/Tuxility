@@ -3,6 +3,8 @@
 	package="com.grimmvarg.android.tuxility" 
 	android:versionName="1.1" android:versionCode="2">
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CALL_PHONE"/>
+	
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
 		<activity android:name=".Launch" android:label="@string/app_name"
 			android:screenOrientation="portrait">
@@ -26,12 +28,9 @@
 		<activity android:name=".PhoneSettingsAndTweaks"
 			android:label="@string/app_name" android:screenOrientation="portrait">
 		</activity>
-		<activity android:name=".SettingsEditor" android:label="@string/app_name"
-			android:screenOrientation="portrait">
+		<activity android:name="PhoneCodes"
+			android:label="@string/app_name" android:screenOrientation="portrait">
 		</activity>
-
-
-
 	</application>
 	
 	<uses-sdk android:minSdkVersion="7" />

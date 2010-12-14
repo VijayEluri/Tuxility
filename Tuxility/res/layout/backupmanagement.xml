@@ -4,14 +4,6 @@
 	android:layout_height="wrap_content">
 
 	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Backup settings.db" 
-		android:layout_weight="0.2" android:id="@+id/backupSettingsDB" />
-	
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Restore settings.db" android:layout_gravity="right"
-		android:layout_weight="0.2" android:id="@+id/restoreSettingsDB" />
-
-	<Button android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:text="Backup /efs" android:layout_gravity="right"
 		android:layout_weight="0.2" android:id="@+id/backupEFS" />
 

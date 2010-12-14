@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,10 +57,11 @@ public class FileChooser extends ListActivity {
 
         File pickedFile = new File(workingDir + "/" + fileList.get(position));
         if(!pickedFile.isDirectory()){
-        	tuxHelper.setChoosenFile(pickedFile.getAbsolutePath());
         	String filename = pickedFile.getName();
         	if((!filename.contains(".")) || (filename.contains(".tar"))){
-        		setResult(RESULT_OK);
+        		Intent data = new Intent();
+            	data.putExtra("kernelPath", pickedFile.getAbsolutePath());
+        		setResult(RESULT_OK, data);
         	}
         	else {
         		setResult(RESULT_CANCELED);
