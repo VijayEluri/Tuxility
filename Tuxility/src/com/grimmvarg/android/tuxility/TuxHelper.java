@@ -10,6 +10,7 @@ import java.util.Calendar;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.location.Address;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,27 +35,32 @@ public class TuxHelper {
 			Log.v("<--- CLIHandler - Setup() --->", "Creating our folders in " + tuxilityDir.toString());
 			tuxilityDir.mkdir();
 			backupDir.mkdir();
-			AssetManager assetManager = tuxilityContext.getAssets();
-			InputStream inputStream = null;
-			try {
-				inputStream = assetManager.open("flash_image");
-				OutputStream out = new FileOutputStream(tuxilityPath
-						+ "flash_image");
-				byte buf[] = new byte[1024];
-				int len;
-				while ((len = inputStream.read(buf)) > 0) {
-					out.write(buf, 0, len);
-				}
-				out.close();
-				inputStream.close();
-				showMessage("Setup Completed");
-			} catch (IOException e) {
-				Log.v("<--- CLIHandler - Setup() --->", e.toString());
-			}
+			getAssets();
 
-		} else {
-			Log.v("<--- CLIHandler - Setup() --->", "Found file: "
-					+ tuxilityDir.toString());
+		} else if(!(new File(tuxilityPath+"assets").exists())){
+			getAssets();
+		}
+	}
+	
+	public void getAssets(){
+		AssetManager assetManager = tuxilityContext.getAssets();
+		InputStream inputStream = null;
+		try {
+			inputStream = assetManager.open("assets.tar");
+			OutputStream out = new FileOutputStream(tuxilityPath
+					+ "assets.tar");
+			byte buf[] = new byte[1024];
+			int len;
+			while ((len = inputStream.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
+			out.close();
+			inputStream.close();
+			shell.execute("tar " + "-C " + tuxilityPath + " -xf " + tuxilityPath + "assets.tar", 1);
+			shell.execute("rm " + tuxilityPath + "assets.tar", 1);
+			showMessage("Setup Completed");
+		} catch (IOException e) {
+			Log.v("<--- CLIHandler - Setup() --->", e.toString());
 		}
 	}
 
@@ -81,9 +87,9 @@ public class TuxHelper {
 
 	public String unTar(String tarFile) {
 		String timeStamp = now();
-		String path = "/cache/tuxility-" + timeStamp + "/";
-		shell.execute("mkdir " + path, 1);
-		shell.execute("tar " + "-C " + path + " -xf " + tarFile, 1);
+		String path = tuxilityPath + ".tmp/";
+		shell.execute("mkdir " + path, 0);
+		shell.execute("tar " + "-C " + path + " -xf " + tarFile, 0);
 		return path;
 	}
 
@@ -95,18 +101,12 @@ public class TuxHelper {
 		
 		showMessage("Flashing");
 		
-		int result = 0;
-		shell.execute("cat " + tuxilityPath + "flash_image > /data/flash_image", 2);
-		result += shell.execute("chmod 755 /data/flash_image", 1);
-		result += shell.execute("chown system.system /data/flash_image", 1);
-		result += shell.execute("/data/flash_image " + " boot " + kernelPath , 1);
+		shell.execute("cat " + tuxilityPath + "assets/" + "flash_image > /data/flash_image", 2);
+		shell.execute("chmod 755 /data/flash_image", 2);
+		//shell.execute("chown system.system /data/flash_image", 2);
+		shell.execute("/data/flash_image" + " boot " + kernelPath , 2);
 		
-		if(result == 0){
-			showMessage("Reboot to try out your new kernel :)");
-		}
-		else {
-			showMessage("Flash failed, go to support :(");
-		}
+		showMessage("Reboot to try out your new kernel :)");
 		
 	}
 

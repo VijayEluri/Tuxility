@@ -1,7 +1,10 @@
 package com.grimmvarg.android.tuxility;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -31,13 +34,22 @@ public class PhoneCodes extends ListActivity {
 	}
 
 	private void fillList() {
-		commandMap.put("Service Mode", "*#*#197328640#*#*");
-		commandMap.put("Phone Version", "*#*#44336#*#*");
+		commandMap.put("Service Mode", "tel:*%23*%23197328640%23*%23*");
+		commandMap.put("Build Info", "tel:*%23*%2344336%23*%23*");
+		commandMap.put("Phone And Battery Info", "tel:*%23*%234636%23*%23*");
+		commandMap.put("Audio Test", "tel:*%23*%230673%23*%23*");
+		commandMap.put("Wlan Tests", "tel:*%23*%23232339%23*%23*");
+		commandMap.put("Light Sensor", "tel:*%23*%230589%23*%23*");
 
 		commands.add("Service Mode");
-		commands.add("Phone Version");
-
+		commands.add("Build Info");
+		commands.add("Phone And Battery Info");
+		commands.add("Audio Test");
+		commands.add("Wlan Tests");
+		commands.add("Light Sensor");
+		
 	}
+	
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {

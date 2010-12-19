@@ -17,9 +17,11 @@ public class KernelHacking extends Activity implements OnClickListener {
 
 		Button backupKernel = (Button) findViewById(R.id.backupKernel);
 		Button installKernel = (Button) findViewById(R.id.installKernel);
+		Button getVoodoo = (Button) findViewById(R.id.getVoodoo);
 
 		backupKernel.setOnClickListener(this);
 		installKernel.setOnClickListener(this);
+		getVoodoo.setOnClickListener(this);
 	}
 
 	public void onClick(View view) {
@@ -32,6 +34,9 @@ public class KernelHacking extends Activity implements OnClickListener {
 			nextIntent.setClassName(this, FileChooser.class.getName());
 			nextIntent.putExtra("kernelPath", "");
 			startActivityForResult(nextIntent, 1);
+			break;
+		case R.id.getVoodoo:
+			tuxHelper.showMessage("Sooon! :)");
 			break;
 		}
 

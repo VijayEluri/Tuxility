@@ -5,11 +5,17 @@
 
 	<Button android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="Install a kernel"
-		android:layout_gravity="right" android:layout_weight="0.2" android:id="@+id/installKernel" />
+		android:layout_gravity="right" android:layout_weight="0.2"
+		android:id="@+id/installKernel" />
 
 	<Button android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="Backup kernel"
 		android:layout_gravity="right" android:layout_weight="0.2"
 		android:id="@+id/backupKernel" />
+
+	<Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Get latest voodoo"
+		android:layout_gravity="right" android:layout_weight="0.2"
+		android:id="@+id/getVoodoo" />
 
 </LinearLayout>

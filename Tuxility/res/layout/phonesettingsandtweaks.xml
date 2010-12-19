@@ -8,11 +8,11 @@
 		android:layout_weight="0.2" android:id="@+id/clearBatteryStats" />
 
 	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Cheat codes"
+		android:layout_height="wrap_content" android:text="Phone codes"
 		android:layout_gravity="right" android:layout_weight="0.2" android:id="@+id/phoneCodes" />
 
 	<Button android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Edit settings.db"
+		android:layout_height="wrap_content" android:text="Phone settings"
 		android:layout_gravity="right" android:layout_weight="0.2"
 		android:id="@+id/editSettings" />
 
