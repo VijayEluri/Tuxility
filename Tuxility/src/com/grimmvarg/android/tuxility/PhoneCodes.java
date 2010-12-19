@@ -31,8 +31,8 @@ public class PhoneCodes extends ListActivity {
 	}
 
 	private void fillList() {
-		commandMap.put("Service Mode", "tel:*#*#197328640#*#*");
-		commandMap.put("Phone Version", "tel:*#*#44336#*#*");
+		commandMap.put("Service Mode", "*#*#197328640#*#*");
+		commandMap.put("Phone Version", "*#*#44336#*#*");
 
 		commands.add("Service Mode");
 		commands.add("Phone Version");
@@ -41,7 +41,7 @@ public class PhoneCodes extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent nextIntent = new Intent(Intent.ACTION_CALL);
+		Intent nextIntent = new Intent(Intent.ACTION_DIAL);
 		nextIntent.setData(Uri.parse(commandMap.get(commands.get(position))));
 		startActivity(nextIntent);
 	}

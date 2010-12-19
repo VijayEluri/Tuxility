@@ -23,10 +23,7 @@ public class TuxHelper {
 
 	private TuxHelper(Context context) {
 		tuxilityContext = context;
-		setUp();
-	}
-	
-	private void setUp(){
+
 		File tuxilityDir = new File(tuxilityPath);
 		File backupDir = new File(backupPath);
 		
@@ -40,9 +37,9 @@ public class TuxHelper {
 			AssetManager assetManager = tuxilityContext.getAssets();
 			InputStream inputStream = null;
 			try {
-				inputStream = assetManager.open("redbend_ua");
+				inputStream = assetManager.open("flash_image");
 				OutputStream out = new FileOutputStream(tuxilityPath
-						+ "redbend_ua");
+						+ "flash_image");
 				byte buf[] = new byte[1024];
 				int len;
 				while ((len = inputStream.read(buf)) > 0) {
@@ -66,8 +63,8 @@ public class TuxHelper {
 		if(efsBackup.exists()){
 			showMessage("Backup exist!");
 		} else {
-			shell.execute("tar zcvf " + backupPath + "efs-backup.tar.gz /efs", 1);
-			if(efsBackup.exists()) showMessage("Success!");
+			int result = shell.execute("tar zcvf " + backupPath + "efs-backup.tar.gz /efs", 1);
+			if(result == 0) showMessage("Success!");
 		}
 	}
 
@@ -96,11 +93,21 @@ public class TuxHelper {
 			kernelPath = unTar(kernelPath) + "zImage";
 		}
 		
-		showMessage("Flashing and Rebooting..");
+		showMessage("Flashing");
 		
-		shell.execute("cat " + tuxilityPath + "redbend_ua > /data/redbend_ua", 2);
-		shell.execute("chmod 755 /data/redbend_ua", 2);
-		shell.execute("/data/redbend_ua restore " + kernelPath + " /dev/block/bml7", 2);
+		int result = 0;
+		shell.execute("cat " + tuxilityPath + "flash_image > /data/flash_image", 2);
+		result += shell.execute("chmod 755 /data/flash_image", 1);
+		result += shell.execute("chown system.system /data/flash_image", 1);
+		result += shell.execute("/data/flash_image " + " boot " + kernelPath , 1);
+		
+		if(result == 0){
+			showMessage("Reboot to try out your new kernel :)");
+		}
+		else {
+			showMessage("Flash failed, go to support :(");
+		}
+		
 	}
 
 	public void backupKernel(String name) {
